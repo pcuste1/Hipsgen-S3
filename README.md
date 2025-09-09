@@ -66,6 +66,6 @@ Open the downloaded directory in cmdline and run `npx serve . --cors`. This will
 
 # Roadmap
 - custom regex filtering of INDEX results
+- user defined S3 bucket instead of hardcoded panstarrs ds1 
 - port forwarding so that the server can be launched from docker and viewed on your local machine 
 - example hipsgen with better resolution and use of Hipsgen color flags 
-
