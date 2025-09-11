@@ -1,5 +1,5 @@
 # Download and verify the RPM in this container
-FROM public.ecr.aws/amazonlinux/amazonlinux:2023 as builder
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023 AS builder
 
 # We need the full version of GnuPG
 RUN dnf install -y --allowerasing wget gnupg2
