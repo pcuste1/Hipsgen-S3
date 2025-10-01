@@ -7,9 +7,10 @@ if [[ -z "$dir" ]]; then
     exit 1
 fi
 
-for file in "$dir"/*; do
+for file in "$dir"/*/*; do
     if [[ -f "$file" ]]; then
         echo "Filtering $file ..."
-        grep -E '"name":.*\.(i|r|g)\.' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
+        grep -E '"name":.*\.(i|r|g)\..*\.unconv\.exp[^w]' "$file" > "${file}.tmp"
+        mv "${file}.tmp" "$file"
     fi
 done

@@ -23,7 +23,7 @@ docker build -t hipsgen-s3 .
 2. Run the docker container
 You will then need to run your docker container. The command below will automatically enter you into a bash terminal inside of the docker container 
 ```zsh
-docker run -ti --cap-add SYS_ADMIN --devoce /dev/fuse --entrypoint bash hipsgen-s3
+docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --entrypoint bash hipsgen-s3
 ```
 
 3. Run the startup script
@@ -47,7 +47,7 @@ Currently the below command will filter out all but the `i`, `r`, and `g`, detec
 6. Run the rest of the Hipsgen commands 
 At this point, all manual intervention is done and you simply need the run the rest of the Hipsgen commands in order
 ```bash
-java -jar Hipsgen.jar in="mnt/ps1/public/rings.v3.skycell/2381/053" out="/data/hips" TILES order=9 id=test -nice -d
+java -jar Hipsgen.jar in="mnt/ps1/public/rings.v3.skycell/2381/053" out="/data/hips" TILES order=9 id=test -nice -d pilot=100 -cacheRemoveOnExit=true
 
 java -jar Hipsgen.jar in="mnt/ps1/public/rings.v3.skycell/2381/053" out="/data/hips" PNG order=9 id=test -nice -d
 
