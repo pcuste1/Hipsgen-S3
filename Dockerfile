@@ -1,5 +1,12 @@
+# download aws cli v2 in this container to sync output to S3
+FROM amazon/aws-cli:latest AS awscli-builder
+
 # Download and verify the RPM in this container
 FROM public.ecr.aws/amazonlinux/amazonlinux:2023 AS builder
+
+# Copy the AWS CLI from the builder stage into the final image
+COPY --from=awscli-builder /usr/local/bin/aws /usr/local/bin/aws
+COPY --from=awscli-builder /usr/local/aws-cli /usr/local/aws-cli
 
 # We need the full version of GnuPG
 RUN dnf install -y --allowerasing wget gnupg2
@@ -20,8 +27,10 @@ RUN gpg --verify mount-s3.rpm.asc
 FROM amazonlinux:2023
 COPY --from=builder /mount-s3.rpm /mount-s3.rpm
 
-RUN dnf upgrade -y && \
+RUN dnf update -y && \
+    dnf upgrade -y && \
     dnf install -y ./mount-s3.rpm && \
+    dnf install -y awscli && \
     dnf clean all && \
     rm mount-s3.rpm
 
@@ -45,5 +54,15 @@ RUN chmod +x /startup.sh
 ADD filter.sh /
 RUN chmod +x /filter.sh
 
+# add hipsgen jar
+ADD Hipsgen.jar /
+RUN chmod +x /Hipsgen.jar
+
+# add input files (temporary test)
+ADD input_files_small.txt /
+ADD input_files_medium.txt /
+ADD input_files_large.txt /
+ADD m31_input_files.txt /
+
 # Run in foreground mode so that the container can be detached without exiting Mountpoint
-ENTRYPOINT [ "mount-s3", "-f" ]
+ENTRYPOINT ["/startup.sh"]
